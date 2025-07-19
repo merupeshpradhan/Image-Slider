@@ -29,7 +29,7 @@ export default function ImageSlider({ url, limit = 5, page = 1 }) {
   }
 
   function handleNext() {
-    setCurrentSlide === images.length ? 0 : currentSlide + 1;
+    setCurrentSlide(currentSlide === images.length - 1 ? 0 : currentSlide + 1);
   }
 
   useEffect(() => {
@@ -39,52 +39,78 @@ export default function ImageSlider({ url, limit = 5, page = 1 }) {
   console.log(images);
 
   if (loading) {
-    return <div>Loading data ! please wait</div>;
+    return (
+      <div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div>Loading data ! please wait</div>
+      </div>
+    );
   }
 
   if (errorMsg !== null) {
-    return <div>Error occured ! {errorMsg}</div>;
+    return (
+      <div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div>Error occured ! {errorMsg}</div>;
+      </div>
+    );
   }
 
   return (
-    <div className="container">
-      <BsArrowLeftCircleFill
-        onClick={handlePrevious}
-        className="arrow arrow-left"
-      />
-      {images && images.length
-        ? images.map((imagesItem, index) => (
-            <img
-              key={imagesItem.id}
-              alt={imagesItem.download_url}
-              src={imagesItem.download_url}
-              className={
-                currentSlide === index
-                  ? "current-image"
-                  : "current-image hide-current-image"
-              }
-            />
-          ))
-        : null}
-      <BsArrowRightCircleFill
-        onClick={handleNext}
-        className="arrow arrow-right"
-      />
-      <span className="circle-indecators">
+    <diV className="full-container">
+      <div className="container">
+        <BsArrowLeftCircleFill
+          onClick={handlePrevious}
+          className="arrow arrow-left"
+        />
         {images && images.length
-          ? images.map((_, index) => (
-              <button
-                key={index}
+          ? images.map((imagesItem, index) => (
+              <img
+                key={imagesItem.id}
+                alt={imagesItem.download_url}
+                src={imagesItem.download_url}
                 className={
                   currentSlide === index
-                    ? "current-indicator"
-                    : "current-indicator inactive-indicator"
+                    ? "current-image"
+                    : "current-image hide-current-image"
                 }
-                onClick={() => setCurrentSlide(index)}
-              ></button>
+              />
             ))
           : null}
-      </span>
-    </div>
+        <BsArrowRightCircleFill
+          onClick={handleNext}
+          className="arrow arrow-right"
+        />
+        <span className="circle-indecators">
+          {images && images.length
+            ? images.map((_, index) => (
+                <button
+                  key={index}
+                  className={
+                    currentSlide === index
+                      ? "current-indicator"
+                      : "current-indicator inactive-indicator"
+                  }
+                  onClick={() => setCurrentSlide(index)}
+                ></button>
+              ))
+            : null}
+        </span>
+      </div>
+    </diV>
   );
 }
