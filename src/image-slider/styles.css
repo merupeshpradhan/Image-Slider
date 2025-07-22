@@ -1,4 +1,4 @@
-.main-container {
+.full-container {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -43,11 +43,22 @@
   display: none;
 }
 
-.current-indecator{
-
+.current-indicator {
+  background-color: #ffffff;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  border: none;
+  outline: none;
+  margin: 0 0.2rem;
+  cursor: pointer;
 }
 
-.circle-indicator {
+.inactive-indicator {
+  background-color: gray;
+}
+
+.circle-indicators {
   display: flex;
   position: absolute;
   bottom: 1rem;

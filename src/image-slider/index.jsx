@@ -36,7 +36,9 @@ export default function Imageslider({ url, page = 5, limit = 1 }) {
   }
 
   function rightImage() {
-    setCurrentSlider(currentSlider === images.length ? 0 : currentSlider + 1);
+    setCurrentSlider(
+      currentSlider === images.length - 1 ? 0 : currentSlider + 1
+    );
 
     // console.log(currentSlider);
   }
@@ -74,13 +76,14 @@ export default function Imageslider({ url, page = 5, limit = 1 }) {
           fontSize: "50px",
         }}
       >
-        <div>Error occured {errorimg} </div>;
+        <div>Error occured {errorimg} </div>
       </div>
     );
   }
 
   return (
-    <div className="main-container">
+    // <div className="full-container">
+    <div className="full-container">
       <div className="container">
         <BsFillArrowLeftCircleFill
           className="arrow arrow-left"
@@ -104,19 +107,21 @@ export default function Imageslider({ url, page = 5, limit = 1 }) {
           className="arrow arrow-right"
           onClick={rightImage}
         />
-        <span className="circle-indicator" />
-        {images && images.length
-          ? images.map((_, index) => {
-              <button
-                key={index}
-                className={
-                  currentSlider === index
-                    ? "current-indecator"
-                    : "inactive-indicator"
-                }
-              ></button>;
-            })
-          : null}
+        {/* <span className="circle-indicators" /> */}
+        <span className="circle-indicators">
+          {images && images.length
+            ? images.map((_, index) => (
+                <button
+                  key={index}
+                  className={
+                    currentSlider === index
+                      ? "current-indicator"
+                      : "current-indicator inactive-indicator"
+                  }
+                ></button>
+              ))
+            : null}
+        </span>
       </div>
     </div>
   );
