@@ -5,42 +5,43 @@ import {
 } from "react-icons/bs";
 import "./styles.css";
 
-export default function Imageslider({ url, page = 5, limit = 1 }) {
+export default function ImageSlider({ url, page = 1, limit = 5 }) {
   const [images, setImages] = useState([]);
   const [currentSlider, setCurrentSlider] = useState(0);
-  const [errorimg, setErrorImage] = useState(null);
+  const [errImg, setErrImg] = useState(null);
   const [loading, setLoading] = useState(false);
 
   async function fetchImages(getUrl) {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const response = await fetch(`${getUrl}?page=${page}&limit=${limit}`);
-    const data = await response.json();
+      const response = await fetch(`${getUrl}?pages=${page}&limit=${limit}`);
+      const data = await response.json();
 
-    if (data) {
-      setImages(data);
-      setLoading(false);
-    } else {
-      setErrorImage(e.message);
+      if (data) {
+        setImages(data);
+        setLoading(false);
+      }
+    } catch (e) {
+      setErrImg(e.message);
       setLoading(false);
     }
   }
 
-  // console.log(images);
+  console.log(images);
 
-  function leftImage() {
+  function leftSideImg() {
     setCurrentSlider(
       currentSlider === 0 ? images.length - 1 : currentSlider - 1
     );
-    // console.log(currentSlider);
+    console.log(currentSlider);
   }
 
-  function rightImage() {
+  function rightSideImg() {
     setCurrentSlider(
       currentSlider === images.length - 1 ? 0 : currentSlider + 1
     );
-
-    // console.log(currentSlider);
+    console.log(currentSlider);
   }
 
   useEffect(() => {
@@ -48,66 +49,34 @@ export default function Imageslider({ url, page = 5, limit = 1 }) {
   }, [url]);
 
   if (loading) {
-    return (
-      <div
-        style={{
-          width: "100vw",
-          height: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: "50px",
-        }}
-      >
-        <div>Loading data ! please wait</div>
-      </div>
-    );
+    return <div>Loading data ! please wait</div>;
   }
 
-  if (errorimg !== null) {
-    return (
-      <div
-        style={{
-          width: "100vw",
-          height: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: "50px",
-        }}
-      >
-        <div>Error occured {errorimg} </div>
-      </div>
-    );
+  if (errImg !== null) {
+    return <div>Somthing went wrong {errImg}</div>;
   }
 
   return (
-    // <div className="full-container">
     <div className="full-container">
       <div className="container">
         <BsFillArrowLeftCircleFill
+          onClick={leftSideImg}
           className="arrow arrow-left"
-          onClick={leftImage}
         />
         {images && images.length
-          ? images.map((imagesItem, index) => (
+          ? images.map((imageItem, index) => (
               <img
-                key={imagesItem}
-                alt={imagesItem.download_url}
-                src={imagesItem.download_url}
-                className={
-                  currentSlider === index
-                    ? "current-image"
-                    : "current-image hide-current-image"
-                }
+                key={index}
+                alt={imageItem.download_url}
+                src={imageItem.download_url}
+                className={currentSlider === index?"current-image" :"current-image hide-current-image"}
               />
             ))
           : null}
         <BsFillArrowRightCircleFill
+          onClick={rightSideImg}
           className="arrow arrow-right"
-          onClick={rightImage}
         />
-        {/* <span className="circle-indicators" /> */}
         <span className="circle-indicators">
           {images && images.length
             ? images.map((_, index) => (
