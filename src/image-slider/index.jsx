@@ -34,14 +34,14 @@ export default function ImageSlider({ url, page = 1, limit = 5 }) {
     setCurrentSlider(
       currentSlider === 0 ? images.length - 1 : currentSlider - 1
     );
-    console.log(currentSlider);
+    // console.log(currentSlider);
   }
 
   function rightSideImg() {
     setCurrentSlider(
       currentSlider === images.length - 1 ? 0 : currentSlider + 1
     );
-    console.log(currentSlider);
+    // console.log(currentSlider);
   }
 
   useEffect(() => {
@@ -49,11 +49,36 @@ export default function ImageSlider({ url, page = 1, limit = 5 }) {
   }, [url]);
 
   if (loading) {
-    return <div>Loading data ! please wait</div>;
+    return (
+      <div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "30px",
+        }}
+      >
+        <div>Loading data ! please wait</div>
+      </div>
+    );
   }
 
   if (errImg !== null) {
-    return <div>Somthing went wrong {errImg}</div>;
+    return;
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: "30px",
+      }}
+    >
+      <div>Somthing went wrong {errImg}</div>;
+    </div>;
   }
 
   return (
@@ -69,7 +94,11 @@ export default function ImageSlider({ url, page = 1, limit = 5 }) {
                 key={index}
                 alt={imageItem.download_url}
                 src={imageItem.download_url}
-                className={currentSlider === index?"current-image" :"current-image hide-current-image"}
+                className={
+                  currentSlider === index
+                    ? "current-image"
+                    : "current-image hide-current-image"
+                }
               />
             ))
           : null}
